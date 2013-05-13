@@ -28,4 +28,12 @@
     return [[NJSActor alloc] initWithName:@"John Doe" andYearOfBirth:@1950];
 }
 
+- (BOOL) isEqual:(NJSActor*)object {
+    return ([self.name isEqual:object.name] && [self.yearOfBirth isEqual:object.yearOfBirth]);
+}
+
+- (NSString*) description {
+    return [NSString stringWithFormat:@"<NJSActor: name='%@' && yearOfBirth='%@'>", self.name, self.yearOfBirth];
+}
+
 @end
