@@ -36,6 +36,10 @@
     NJSActor *noActor = nil;
     noActor.name = @"Who am I?";
     
+    STAssertEqualObjects(@"Hello World", [kBacon.name sayHello], @"Capital H and capital W");
+    // tests for pointer: STAssertEquals(@"Hello World", [kBacon.name sayHello], @"Capital H and capital W");
+    STAssertTrue([@"Hello World" isEqualToString:[kBacon.name sayHello]], @"Capital H and capital W");
+    
 }
 
 @end
