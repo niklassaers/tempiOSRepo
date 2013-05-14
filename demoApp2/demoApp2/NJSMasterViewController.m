@@ -9,13 +9,16 @@
 #import "NJSMasterViewController.h"
 
 #import "NJSDetailViewController.h"
+#import "NJSMyFancyDatasource.h"
 
 @interface NJSMasterViewController () {
     NSMutableArray *_objects;
 }
 @end
 
-@implementation NJSMasterViewController
+@implementation NJSMasterViewController {
+    NJSMyFancyDatasource *myDatasource;
+}
 
 - (void)awakeFromNib
 {
@@ -28,8 +31,13 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                               target:self
+                                                                               action:@selector(insertNewObject:)];
+    
     self.navigationItem.rightBarButtonItem = addButton;
+    myDatasource = [[NJSMyFancyDatasource alloc] init];
+    self.tableView.dataSource = myDatasource;
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,7 +46,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)insertNewObject:(id)sender
+- (void)insertNewObject:(UIBarButtonItem*)sender
 {
     if (!_objects) {
         _objects = [[NSMutableArray alloc] init];
@@ -62,17 +70,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MasterGenreCell" forIndexPath:indexPath];
 
     NSDate *object = _objects[indexPath.row];
     cell.textLabel.text = [object description];
+    cell.detailTextLabel.text = @"123";
     return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
+    return indexPath.row % 2;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -106,7 +115,9 @@
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSDate *object = _objects[indexPath.row];
-        [[segue destinationViewController] setDetailItem:object];
+        NJSDetailViewController *dest = segue.destinationViewController;
+        dest.detailItem = object;
+//        [[segue destinationViewController] setDetailItem:object];
     }
 }
 

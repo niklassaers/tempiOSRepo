@@ -12,5 +12,8 @@
 
 @property (strong, nonatomic) id detailItem;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *veryImportantActivityIndicator;
+- (IBAction)sliderChanged:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @end
